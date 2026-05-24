@@ -1,6 +1,6 @@
 # ai-miracle-decade-plus
 
-Landing page for the **AI Miracle Decade Plus** course — a self-paced reading
+Landing page for the **AI Miracle Decade+** course — a self-paced reading
 of every landmark AI paper from DBN (2006) to GPT-4 (2023).
 
 - **Live page:** <https://josmithiii.github.io/ai-miracle-decade-plus/>
