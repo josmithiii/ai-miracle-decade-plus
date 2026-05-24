@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>AI Miracle Decade Plus</title>
+
+    <meta name="description" content="A self-paced reading of every landmark AI paper from DBN (2006) to GPT-4 (2023). Forty papers, seven concept threads, no time budget.">
+    <meta property="og:title" content="AI Miracle Decade Plus">
+    <meta property="og:description" content="A self-paced reading of every landmark AI paper from DBN (2006) to GPT-4 (2023). Forty papers, seven concept threads, no time budget.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+
+    <script type="text/javascript">
+      /* Honor stored theme before paint to avoid a light/dark flash. */
+      (function () {
+        try {
+          var t = localStorage.getItem('jos-theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {}
+      }());
+    </script>
+
+    <style>
+      /* Palette mirrors https://ccrma.stanford.edu/~jos/jos.css */
+      :root {
+        color-scheme: light dark;
+        --title-color:      #000040;
+        --background-color: #FFFFFF;
+        --text-color:       #000;
+        --muted-color:      #555;
+        --link-color:       #000088;
+        --visited-color:    gray;
+        --hover-color:      red;
+        --rule-color:       blue;
+        --accent-color:     #050;       /* Karpathy green for year tags */
+        --rule-soft:        #eee;
+        --code-bg:          #f6f6f6;
+        --star-bg:          #faf7ee;
+        --star-border:      #c79b00;
+        --star-mark:        #c79b00;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --title-color:      #FFFFBF;
+          --background-color: #111122;
+          --text-color:       #ffffff;
+          --muted-color:      #aaa;
+          --link-color:       #CCAAEE;
+          --visited-color:    gray;
+          --hover-color:      red;
+          --rule-color:       lightgreen;
+          --accent-color:     #FFFFBF;   /* match title-yellow, not a link color */
+          --rule-soft:        #2a2a3a;
+          --code-bg:          #1a1a2a;
+          --star-bg:          #1f1a0e;
+          --star-border:      #c79b00;
+          --star-mark:        #FFFFBF;
+        }
+      }
+      /* Explicit toggle overrides (set by the theme button + JS below). */
+      html[data-theme="light"] {
+        color-scheme: light;
+        --title-color:      #000040;
+        --background-color: #FFFFFF;
+        --text-color:       #000;
+        --muted-color:      #555;
+        --link-color:       #000088;
+        --visited-color:    gray;
+        --hover-color:      red;
+        --rule-color:       blue;
+        --accent-color:     #050;
+        --rule-soft:        #eee;
+        --code-bg:          #f6f6f6;
+        --star-bg:          #faf7ee;
+        --star-border:      #c79b00;
+        --star-mark:        #c79b00;
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --title-color:      #FFFFBF;
+        --background-color: #111122;
+        --text-color:       #ffffff;
+        --muted-color:      #aaa;
+        --link-color:       #CCAAEE;
+        --visited-color:    gray;
+        --hover-color:      red;
+        --rule-color:       lightgreen;
+        --accent-color:     #FFFFBF;
+        --rule-soft:        #2a2a3a;
+        --code-bg:          #1a1a2a;
+        --star-bg:          #1f1a0e;
+        --star-border:      #c79b00;
+        --star-mark:        #FFFFBF;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--background-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      #wrap {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        color: var(--title-color);
+        font-size: 34px;
+        font-weight: normal;
+        text-align: center;
+        margin: 0 0 30px 0;
+      }
+      h2 {
+        color: var(--title-color);
+        font-size: 24px;
+        font-weight: normal;
+        font-style: italic;
+        margin-top: 50px;
+        margin-bottom: 10px;
+      }
+      p { margin: 10px 0; }
+      a          { color: var(--link-color); text-decoration: none; }
+      a:visited  { color: var(--visited-color); }
+      a:hover    { color: var(--hover-color); text-decoration: underline; }
+      a:active   { color: var(--hover-color); }
+
+      /* Phase block (analog of Karpathy's .s) */
+      .s {
+        margin-top: 20px;
+        border-bottom: 1px solid var(--rule-soft);
+        padding-bottom: 20px;
+      }
+      .t {
+        color: var(--accent-color);
+        display: inline-block;
+        font-weight: bold;
+        min-width: 90px;
+      }
+      .v {
+        display: inline-block;
+        font-weight: bold;
+      }
+      .v a { color: var(--accent-color); }
+      .v a:hover { color: var(--hover-color); }
+      .d {
+        font-size: 14px;
+        color: var(--text-color);
+        margin-top: 6px;
+      }
+
+      /* Per-paper line within a phase */
+      .papers {
+        margin-top: 8px;
+        font-size: 14px;
+      }
+      .papers li { margin: 3px 0; list-style: none; }
+      .papers ul { padding-left: 18px; margin: 4px 0; }
+      .yr {
+        color: var(--muted-color);
+        display: inline-block;
+        min-width: 54px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Concept-page "star stop" callout */
+      .star {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: var(--star-bg);
+        border-left: 3px solid var(--star-border);
+        font-size: 14px;
+      }
+      .star::before {
+        content: "★ ";
+        color: var(--star-mark);
+        font-weight: bold;
+      }
+
+      /* "Take the course" code block */
+      pre {
+        background: var(--code-bg);
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        overflow-x: auto;
+      }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+      /* Source/footer */
+      .footer {
+        margin-top: 60px;
+        padding-top: 20px;
+        border-top: 1px solid var(--rule-soft);
+        font-size: 14px;
+        color: var(--muted-color);
+        text-align: center;
+      }
+
+      /* Theme toggle button (mirrors the one on ccrma.stanford.edu/~jos/) */
+      .theme-toggle {
+        background: var(--background-color);
+        border: 1px solid var(--rule-color);
+        color: var(--text-color);
+        cursor: pointer;
+        font: inherit;
+        padding: 0.2em 0.45em;
+        position: fixed;
+        right: 0.5em;
+        top: 0.5em;
+        z-index: 10;
+      }
+      .theme-toggle:hover,
+      .theme-toggle:focus { color: var(--hover-color); }
+      .theme-toggle:focus { outline: none; }
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--rule-color);
+        outline-offset: 1px;
+      }
+      .theme-toggle:has(.sun) {
+        padding-top: 0.1em;
+        padding-bottom: 0.1em;
+      }
+    </style>
+  </head>
+  <body>
+
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle color theme"></button>
+    <script type="text/javascript">
+      /* Theme toggle: same UX as ccrma.stanford.edu/~jos/. Stores choice
+         in localStorage under 'jos-theme' (per-origin, so it's separate
+         from JOS's main site — same key name for mental consistency). */
+      (function () {
+        var button = document.getElementById('themeToggle');
+        var root = document.documentElement;
+        var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+        function stored() { try { return localStorage.getItem('jos-theme'); } catch (e) { return null; } }
+        function sys()    { return mq && mq.matches ? 'dark' : 'light'; }
+        function active() { var t = stored(); return (t === 'light' || t === 'dark') ? t : sys(); }
+        function setStored(t) {
+          try { localStorage.setItem('jos-theme', t); } catch (e) {}
+          root.setAttribute('data-theme', t);
+        }
+        function updateButton() {
+          var t = active();
+          button.innerHTML = t === 'dark'
+            ? '&#x2192;<span class="sun">&#x2600;&#xFE0E;</span>'
+            : '&#x2192;<span class="moon">&#x263E;</span>';
+          button.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+          button.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+        }
+        button.addEventListener('click', function () {
+          setStored(active() === 'dark' ? 'light' : 'dark');
+          updateButton();
+        });
+        if (mq) {
+          mq.addEventListener('change', function () { if (!stored()) updateButton(); });
+        }
+        updateButton();
+      }());
+    </script>
+
+    <div id="wrap">
+
+      <h1>AI Miracle Decade Plus</h1>
+
+      <p>A self-paced reading of every landmark AI paper from <a href="https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf">DBN (2006)</a> to the <a href="https://arxiv.org/abs/2303.08774">GPT-4 Technical Report (2023)</a>. Forty papers, seven concept threads, no time budget. The roadmap is patient.</p>
+
+      <p>Reading the originals &mdash; not summaries &mdash; in roughly the order the field experienced them, with cross-cutting concept-page stops that connect papers across lineages. Side quests are first-class: when a paper hooks you, follow your curiosity; the tutor logs the detour and the roadmap pulls you back so nothing important gets quietly skipped.</p>
+
+      <p>Audience: technical reader (engineer, scientist, DSP person, hobbyist) who wants to read the actual papers. Math is welcomed but explained when load-bearing. No assumed PyTorch fluency &mdash; runnable bits are optional sidecars; if you want to build that fluency in parallel, Karpathy's <a href="https://karpathy.ai/zero-to-hero.html">Neural Networks: Zero to Hero</a> is the canonical hands-on companion.</p>
+
+      <p>Source &amp; ways to take the course: <a href="https://github.com/josmithiii/Courses/tree/main/ai-miracle-decade-plus">josmithiii/Courses/ai-miracle-decade-plus</a> &middot; companion paper repo: <a href="https://cm-gitlab.stanford.edu/jos/music423-2023">music423-2023</a> on CCRMA GitLab.</p>
+
+      <h2>The route</h2>
+
+      <p>Twelve phases, in suggested order. Numbers are stops on a roadmap, not days &mdash; spend an hour on one phase or three weeks on another. Each phase ends at a <span class="star" style="display:inline; padding:0 4px; background:none; border:none;">concept-page stop</span> &mdash; a cross-cutting essay tying the phase's papers together.</p>
+
+      <p><em>Out of order is fine.</em> Skip ahead if a stop is already familiar; the tutor marks it <code>[~] skimmed&nbsp;(known)</code> so you can return later. A few real prerequisites do exist &mdash; <a href="#phase-4">Transformer (Phase&nbsp;4)</a> before the LLM phases, <a href="#phase-2">U-Net (Phase&nbsp;2)</a> before diffusion, <a href="#phase-3">Deep RL (Phase&nbsp;3)</a> before alignment &mdash; and the tutor will flag them when you jump.</p>
+
+      <!-- Phase 0 -->
+      <div class="s" id="phase-0">
+        <div class="t">orientation</div>
+        <div class="v">Phase 0 &mdash; On-ramp</div>
+        <div class="d">The 17-year arc in one sitting; how to read an AI paper without drowning; tools (arXiv HTML view, <code>pdf2txt</code>, optional PyTorch).</div>
+        <div class="papers">
+          <ul>
+            <li><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/overview.md">Meta-wiki overview</a> &middot; <a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/README.md">chronological master list</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="s" id="phase-1">
+        <div class="t">2006&ndash;2012</div>
+        <div class="v">Phase 1 &mdash; The restart and the cash-out</div>
+        <div class="d">Deep learning restarts with Hinton's layer-wise unsupervised pretraining; cashes out six years later when GPUs + ImageNet + ReLU + Dropout converge on a CNN that crushes the competition.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2006</span> <a href="https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf">DBN &mdash; A Fast Learning Algorithm for Deep Belief Nets</a> (Hinton, Osindero, Teh)</li>
+            <li><span class="yr">2012</span> <a href="https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">AlexNet &mdash; ImageNet Classification with Deep CNNs</a> (Krizhevsky, Sutskever, Hinton)</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/pretrain-finetune-lineage.md">pretrain-finetune lineage</a> (first half) &mdash; DBN's 12-year dormancy before BERT and GPT-1 cashed in on the idea.</div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="s" id="phase-2">
+        <div class="t">2013&ndash;2015</div>
+        <div class="v">Phase 2 &mdash; The machinery years</div>
+        <div class="d">The training tools and generative scaffolding that made deep learning industrially reliable. Order inside the phase is flexible.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2013</span> <a href="https://arxiv.org/abs/1301.3781">word2vec</a> (Mikolov et&nbsp;al.) &mdash; geometry encodes meaning</li>
+            <li><span class="yr">2013</span> <a href="https://arxiv.org/abs/1312.6114">VAE</a> (Kingma, Welling) &mdash; variational latent generative models</li>
+            <li><span class="yr">2014</span> <a href="https://arxiv.org/abs/1406.2661">GANs</a> (Goodfellow et&nbsp;al.) &mdash; adversarial two-player training</li>
+            <li><span class="yr">2014</span> <a href="https://arxiv.org/abs/1409.3215">Seq2Seq</a> (Sutskever, Vinyals, Le) &mdash; encoder&ndash;decoder pattern</li>
+            <li><span class="yr">2014</span> <a href="https://arxiv.org/abs/1412.6980">Adam</a> (Kingma, Ba) &mdash; adaptive moments</li>
+            <li><span class="yr">2014</span> <a href="https://jmlr.org/papers/v15/srivastava14a.html">Dropout</a> (Srivastava et&nbsp;al.) &mdash; cheap implicit ensembling</li>
+            <li><span class="yr">2015</span> <a href="https://arxiv.org/abs/1502.03167">Batch Normalization</a> (Ioffe, Szegedy)</li>
+            <li><span class="yr">2015</span> <a href="https://arxiv.org/abs/1505.04597">U-Net</a> (Ronneberger et&nbsp;al.) &mdash; encoder&ndash;decoder with skips; returns as the diffusion backbone</li>
+            <li><span class="yr">2015</span> <a href="https://arxiv.org/abs/1512.03385">ResNet</a> (He et&nbsp;al.) &mdash; residual connections, depth unbounded</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/representation-learning-arc.md">representation-learning arc</a> (first half) &mdash; word2vec's geometry thesis, before ELMo and CLIP take it further.</div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="s" id="phase-3">
+        <div class="t">2013&ndash;2017</div>
+        <div class="v">Phase 3 &mdash; Deep RL comes of age</div>
+        <div class="d">From Atari pixels to Go to chess and shogi from scratch &mdash; the same machinery will return in 2022 as the alignment layer for LLMs.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2015</span> <a href="https://www.nature.com/articles/nature14236">DQN</a> (Mnih et&nbsp;al., <em>Nature</em>) &mdash; experience replay + target network + CNN on pixels &middot; <a href="https://arxiv.org/abs/1312.5602">2013 workshop predecessor</a></li>
+            <li><span class="yr">2016</span> <a href="https://www.nature.com/articles/nature16961">AlphaGo</a> (Silver et&nbsp;al., <em>Nature</em>) &mdash; policy + value + MCTS</li>
+            <li><span class="yr">2017</span> <a href="https://arxiv.org/abs/1712.01815">AlphaZero</a> (Silver et&nbsp;al.) &mdash; self-play from scratch</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/rl-and-alignment-arc.md">RL-and-alignment arc</a> (first half) &mdash; the game-RL boom; the alignment half waits for Phase 9.</div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="s" id="phase-4">
+        <div class="t">2016&ndash;2017</div>
+        <div class="v">Phase 4 &mdash; Sequences, audio, and the attention turn</div>
+        <div class="d">Causal dilated convolutions for raw audio; attention reorganizes sequence modeling; discrete latents seed the audio-codec future.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2016</span> <a href="https://arxiv.org/abs/1609.03499">WaveNet</a> (van&nbsp;den&nbsp;Oord et&nbsp;al.)</li>
+            <li><span class="yr">2017</span> <a href="https://arxiv.org/abs/1706.03762">Transformer &mdash; Attention Is All You Need</a> (Vaswani et&nbsp;al.) &mdash; <em>read this one carefully</em></li>
+            <li><span class="yr">2017</span> <a href="https://arxiv.org/abs/1711.00937">VQ-VAE</a> (van&nbsp;den&nbsp;Oord, Vinyals, Kavukcuoglu) &mdash; discrete latents</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 5 -->
+      <div class="s" id="phase-5">
+        <div class="t">2018&ndash;2019</div>
+        <div class="v">Phase 5 &mdash; Pretrain &amp; fine-tune crystallizes</div>
+        <div class="d">The hinge of the entire decade. Read GPT-1 before BERT so the framing tension lands. BERT won 2018's leaderboards; GPT's autoregressive bet won the next five years.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2018</span> <a href="https://arxiv.org/abs/1802.05365">ELMo</a> (Peters et&nbsp;al.) &mdash; contextual word embeddings via bi-LSTM</li>
+            <li><span class="yr">2018</span> <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">GPT-1</a> (Radford et&nbsp;al., OpenAI) &mdash; generative pretraining + fine-tune</li>
+            <li><span class="yr">2018</span> <a href="https://arxiv.org/abs/1810.04805">BERT</a> (Devlin et&nbsp;al.) &mdash; bidirectional masked LM</li>
+            <li><span class="yr">2019</span> <a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">GPT-2</a> (Radford et&nbsp;al., OpenAI) &mdash; unsupervised multitask via scale</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/autoregressive-vs-gap-filling.md">autoregressive vs gap-filling</a> &mdash; the 2018 fork and its historical irony. &middot; <a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/pretrain-finetune-lineage.md">pretrain-finetune lineage (full)</a>.</div>
+      </div>
+
+      <!-- Phase 6 -->
+      <div class="s" id="phase-6">
+        <div class="t">2020</div>
+        <div class="v">Phase 6 &mdash; Scaling and emergence</div>
+        <div class="d">Loss as a smooth power law &mdash; and the surprise of in-context learning, <em>not</em> predicted by the scaling laws.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2020</span> <a href="https://arxiv.org/abs/2001.08361">Scaling Laws for Neural Language Models</a> (Kaplan et&nbsp;al.)</li>
+            <li><span class="yr">2020</span> <a href="https://arxiv.org/abs/2005.14165">GPT-3 &mdash; Language Models are Few-Shot Learners</a> (Brown et&nbsp;al.)</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/scaling-and-emergence.md">scaling and emergence</a> (first half) &mdash; Kaplan's predictable side; Chinchilla's revision waits for Phase 8.</div>
+      </div>
+
+      <!-- Phase 7 -->
+      <div class="s" id="phase-7">
+        <div class="t">2020&ndash;2022</div>
+        <div class="v">Phase 7 &mdash; Diffusion, ViT, and the text-to-image boom</div>
+        <div class="d">Denoising diffusion as a tractable generative framework; images become token sequences; CLIP becomes the multimodal substrate; latent diffusion makes it all practical.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2020</span> <a href="https://arxiv.org/abs/2006.11239">DDPM</a> (Ho, Jain, Abbeel)</li>
+            <li><span class="yr">2020</span> <a href="https://arxiv.org/abs/2010.11929">ViT</a> (Dosovitskiy et&nbsp;al.)</li>
+            <li><span class="yr">2021</span> <a href="https://arxiv.org/abs/2102.12092">DALL-E</a> (Ramesh et&nbsp;al., OpenAI)</li>
+            <li><span class="yr">2021</span> <a href="https://arxiv.org/abs/2103.00020">CLIP</a> (Radford et&nbsp;al., OpenAI)</li>
+            <li><span class="yr">2021</span> <a href="https://arxiv.org/abs/2112.10752">LDM / Stable Diffusion</a> (Rombach et&nbsp;al.)</li>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2205.11487">Imagen</a> (Saharia et&nbsp;al., Google)</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/generative-modeling-frameworks.md">generative-modeling frameworks</a> &middot; <a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/diffusion-vs-autoregressive-by-modality.md">diffusion vs autoregressive by modality</a>.</div>
+      </div>
+
+      <!-- Phase 8 -->
+      <div class="s" id="phase-8">
+        <div class="t">2022</div>
+        <div class="v">Phase 8 &mdash; Post-Chinchilla LLM era</div>
+        <div class="d">Data and parameters scale together; reasoning emerges from prompting; retrieval bolts onto the LLM.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2203.15556">Chinchilla</a> (Hoffmann et&nbsp;al., DeepMind) &mdash; revises Kaplan</li>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2204.02311">PaLM</a> (Chowdhery et&nbsp;al., Google) &mdash; 540B</li>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought Prompting</a> (Wei et&nbsp;al.)</li>
+            <li><span class="yr">2020</span> <a href="https://arxiv.org/abs/2005.11401">RAG</a> (Lewis et&nbsp;al.) &mdash; earlier date but lands here pedagogically</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/scaling-and-emergence.md">scaling and emergence</a> (full).</div>
+      </div>
+
+      <!-- Phase 9 -->
+      <div class="s" id="phase-9">
+        <div class="t">2022</div>
+        <div class="v">Phase 9 &mdash; Alignment</div>
+        <div class="d">The same RL machinery that solved Go now solves "be helpful and harmless." Then: AI feedback replacing some of the human labels.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2203.02155">InstructGPT</a> (Ouyang et&nbsp;al.) &mdash; RLHF; the recipe behind ChatGPT</li>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2212.08073">Constitutional AI</a> (Bai et&nbsp;al., Anthropic)</li>
+          </ul>
+        </div>
+        <div class="star"><a href="https://cm-gitlab.stanford.edu/jos/music423-2023/-/blob/master/ai-2012-to-2023/wiki/rl-and-alignment-arc.md">RL-and-alignment arc</a> (full).</div>
+      </div>
+
+      <!-- Phase 10 -->
+      <div class="s" id="phase-10">
+        <div class="t">2022&ndash;2023</div>
+        <div class="v">Phase 10 &mdash; Capabilities and the post-2022 frontier</div>
+        <div class="d">Weak-supervised ASR at scale; a real science breakout; agents that teach themselves to use tools; the open-weights ecosystem begins; and the new normal of closed frontier reports.</div>
+        <div class="papers">
+          <ul>
+            <li><span class="yr">2021</span> <a href="https://www.nature.com/articles/s41586-021-03819-2">AlphaFold 2</a> (Jumper et&nbsp;al., <em>Nature</em>) &mdash; a science breakout</li>
+            <li><span class="yr">2022</span> <a href="https://arxiv.org/abs/2212.04356">Whisper</a> (Radford et&nbsp;al., OpenAI) &mdash; 680K hours of weak-labeled audio</li>
+            <li><span class="yr">2023</span> <a href="https://arxiv.org/abs/2302.04761">Toolformer</a> (Schick et&nbsp;al.) &mdash; self-supervised tool use</li>
+            <li><span class="yr">2023</span> <a href="https://arxiv.org/abs/2302.13971">LLaMA</a> (Touvron et&nbsp;al., Meta) &mdash; open-weights, Chinchilla-compute-optimal</li>
+            <li><span class="yr">2023</span> <a href="https://arxiv.org/abs/2303.08774">GPT-4 Technical Report</a> (OpenAI) &mdash; read as a <em>report</em>, not a paper</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 11 -->
+      <div class="s" id="phase-11">
+        <div class="t">synthesis</div>
+        <div class="v">Phase 11 &mdash; Where to go next</div>
+        <div class="d">Re-read the overview &mdash; it should feel like a memoir now, not a syllabus. Write your own &ldquo;what's dead / what's alive&rdquo; note on a landmark of your choice. Pick a post-2023 frontier paper (multimodal foundation models, recent audio/music models) and read it freely. Optional capstone: a replication or a teaching writeup.</div>
+      </div>
+
+      <h2>Take the course</h2>
+
+      <p>The course is run as an interactive tutor inside <a href="https://claude.com/claude-code">Claude Code</a>. Each stop is one session; the tutor reads your private <code>progress.md</code>, picks up where you left off, and logs the day's reading and any side quests.</p>
+
+<pre><code>git clone https://github.com/josmithiii/Courses
+cd Courses/ai-miracle-decade-plus
+claude       # launches Claude Code in this folder
+/lesson      # begins (or resumes) the next stop
+</code></pre>
+
+      <p>On a fresh machine the <code>/lesson</code> command seeds your private <code>progress.md</code> from the shipped template &mdash; nothing personal lives in the repo. Set <code>COURSES_DATA_DIR</code> to put learner state somewhere else (the seam a future web-app version flips per-user).</p>
+
+      <p>The <a href="https://github.com/josmithiii/Courses/blob/main/ai-miracle-decade-plus/curriculum.md">full curriculum</a> is the canonical version of this page &mdash; longer, with the pace philosophy, the side-quest protocol, and the teaching method spelled out. The page you're reading is the orientation.</p>
+
+      <div class="footer">
+        Source &middot;
+        <a href="https://github.com/josmithiii/Courses/tree/main/ai-miracle-decade-plus">course on GitHub</a> &middot;
+        <a href="https://cm-gitlab.stanford.edu/jos/music423-2023">paper repo on GitLab</a>
+      </div>
+
+    </div>
+
+  </body>
+</html>
